@@ -71,7 +71,11 @@ int main()
         cin >> u >> v;
         adj[u].pb(v);
     }
-    dfs(0);
+    for (int i = 0; i < n; i++) {
+        if (!vis[i]) {
+            dfs(i);
+        }
+    }
     reverseGraph(n);
     Kosaraju();
 
