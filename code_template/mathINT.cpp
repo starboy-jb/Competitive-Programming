@@ -19,7 +19,7 @@ typedef long double ld;
 inline int add(int x, int y){ x += y; if(x >= mod) x -= mod; return x;}
 inline int sub(int x, int y){ x -= y; if(x < 0) x += mod; return x;}
 inline int mul(int x, int y){ return (x * 1ll * y) % mod;}
-inline int powr(int a, ll b){
+inline int pwr(int a, ll b){
 	int x = 1 % mod;
 	while(b){
 		if(b & 1) x = mul(x, a);
@@ -28,7 +28,7 @@ inline int powr(int a, ll b){
 	}
 	return x;
 }
-inline int inv(int a){ return powr(a, mod - 2);}
+inline int inv(int a){ return pwr(a, mod - 2);}
 
 int main()
 {
