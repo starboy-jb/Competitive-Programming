@@ -56,22 +56,6 @@ void dijkstra(int s, int n) {
             }
         }
     }
-    vector <int> ans;
-    s = n;
-    while (s != par[s]) {
-        ans.pb(s);
-        s = par[s];
-    }
-    if (cost[n] == 1e12) {
-        cout << "-1" << endl;
-        exit(0);
-    }
-    ans.pb(1);
-    reverse(all(ans));
-    for (auto it : ans) {
-        cout << it << " ";
-    }
-    cout << endl;
 }
 
 int main()
