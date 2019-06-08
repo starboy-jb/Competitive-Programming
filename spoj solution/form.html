@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Two Forms </title>
+	<script>
+
+		function form1() {
+			alert('Left Form Submitted');
+		}
+		function form2() {
+			alert('Right Form Submitted');
+		}
+		
+	</script>
+</head>
+<body>
+
+	<div style="border: 2px solid blue; height: 600px; width: 1264px; background-color: #C3EDEB;">
+		<div style="width: 632px; height: 599px; border: 1px solid black; float: left;">
+			<center>
+				<h1 style="color: red;"> Form1 </h1>
+				<hr>
+				<form name="Form1">
+					<table>
+						<tr>
+							<td> UserName: </td>
+							<td> <input type="text" name="uname"> </td>
+						</tr>
+						<tr>
+							<td> email id: </td>
+							<td> <input type="email" name="email"> </td>
+						</tr>
+						<tr>
+							<td> password:  </td>
+							<td> <input type="password" name="password"> </td>
+						</tr>
+						<tr>
+							<td></td>
+							<td> <div style="margin-left: 125px; margin-top: 10px;"> <input type="button" name="submit" value="submit" onclick="form1();"> </div> </td>
+						</tr>
+					</table>
+				</form>
+			</center>
+		</div>
+		<div style="width: 628px; height: 599px; border: 1px solid black; float: left;">
+			<center>
+				<h1 style="color: red;"> Form2 </h1>
+				<hr>
+				<form name="Form2">
+					<table>
+						<tr>
+							<td> FirstName: </td>
+							<td>  <input type="text" name="fname"> </td>
+						</tr>
+						<tr>
+							<td> LastName: </td>
+							<td>  <input type="text" name="lname"> </td>
+						</tr>
+						<tr>
+							<td> DOB: </td>
+							<td>  <input type="date" name="dob"> </td>
+						</tr>
+						<tr>
+							<td> City: </td>
+							<td>  <input type="text" name="city"> </td>
+						</tr>
+						<tr>
+							<td> Gender: </td>
+							<td>  Male <input type="radio" name="gender"> Female <input type="radio" name="gender"> </td>
+						</tr>
+						<tr>
+							<td> Employement Status: </td>
+							<td>
+								<select name="emp_staus">
+									<option> Manager </option>
+									<option> Clerk </option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td> <div style="margin-left: 125px; margin-top: 10px;"> <input type="button" name="submit" value="submit" onclick="form2();"> </div> </td>
+						</tr>
+					</table>
+				</form>
+			</center>
+		</div>
+	</div>
+
+</body>
+</html>
