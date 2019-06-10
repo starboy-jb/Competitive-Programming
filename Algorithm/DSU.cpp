@@ -23,7 +23,7 @@ struct DSU {
     DSU(int n) {
         for (int i = 1; i <= n; i++) {
             par[i] = i;
-            sz[i] = i;
+            sz[i] = 1;
         }
         connected = n;
     }
