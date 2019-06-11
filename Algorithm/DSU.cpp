@@ -15,7 +15,6 @@ typedef long double ld;
 #define PI 3.14159265
 #define endl '\n'
 #define debug(x) cout << #x << " = " << x << endl;
-#define MAX 10001
 
 struct DSU {
     int connected;
