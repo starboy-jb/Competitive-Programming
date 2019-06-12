@@ -16,9 +16,11 @@ typedef long double ld;
 #define endl '\n'
 #define debug(x) cout << #x << " = " << x << endl;
 
+#warning set N accordingly
+
 struct DSU {
     int connected;
-    int par[MAX], sz[MAX];
+    int par[N], sz[N];
     DSU(int n) {
         for (int i = 1; i <= n; i++) {
             par[i] = i;
