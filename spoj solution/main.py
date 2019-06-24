@@ -12,19 +12,22 @@ class CodechefContestAnnouncer:
   	
 	def run(self):
 		contest_link = self.contest_link
-		current_annoucement = ""
+		current_annoucement = ''
 		while True:
 			try:
 				html = requests.get(contest_link)
 				soup = BeautifulSoup(html.text, 'lxml')
 				data = soup.find('div', {'id' : 'announce_content'})
 				announcement = str(data.text)
-				if current_annoucement != announcement:
+				l = len(announcement)
+				if l > 1 and current_annoucement != announcement:
 					message("Codechef Announcement", announcement)
 					current_annoucement = announcement
 			except:
 				pass
 
 if __name__ == '__main__':
-	Contest = CodechefContestAnnouncer("https://www.codechef.com/FFC12019?utm_source=contest_listing&utm_medium=link&utm_campaign=FFC12019")
+	#replace the contest link
+	contest_link = "https://www.codechef.com/LTIME73A";
+	Contest = CodechefContestAnnouncer(contest_link)
 	Contest.run()
