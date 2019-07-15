@@ -1,5 +1,7 @@
 /*input
-4
+1
+3
+10 10 1
 
 */
  
@@ -75,32 +77,73 @@ inline int powr(int a, ll b){
 }
 inline int inv(int a){ return powr(a, mod - 2);}
 
-const int N = 1e6;
-int dp[N];
+map <vector <ll>, ll> mp;
+
+ll fun(vector <ll> vec, int n) {
+  if (n == 2) {
+    return vec[0] + vec[1];
+  }
+  if (mp[vec] != 0) {
+    return mp[vec];
+  }
+  ll ans = LL_INF, cur = LL_INF;
+  for (int i = 0; i < n; i++) {
+    int nxt = (i + 1) % n;
+    if (vec[i] + vec[nxt] < cur) {
+      cur = vec[i] + vec[nxt];
+    }
+  }
+  vector <int> idx;
+  for (int i = 0; i < n; i++) {
+    int nxt = (i + 1) % n;
+    if (vec[i] + vec[nxt] == cur) {
+      idx.pb(i);
+    }
+  }
+  for (auto it : idx) {
+    vector <ll> temp;
+    if (it == n - 1) {
+      for (int i = 1; i < n - 1; i++) {
+        temp.pb(vec[i]);
+      }
+      temp.pb(vec[0] + vec[n - 1]);
+    } else {
+      for (int i = 0; i < n; i++) {
+        if (i == it) {
+          temp.pb(vec[i] + vec[i + 1]);
+          i++;
+        } else {
+          temp.pb(vec[i]);
+        }
+      }
+    }
+    ans = min(ans, cur + fun(temp, n - 1));
+  }
+  return mp[vec] = ans;
+}
 
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
  
-  int n;
-  cin >> n;
-  dp[0] = 1;
-  dp[1] = 1;
-  dp[2] = 2;
-  dp[3] = 3;
-  for (int i = 4; i <= n; i++) {
-    dp[i] = add(dp[i], dp[i - 1]);
-    dp[i] = add(dp[i], dp[i - 2]);
+  int test;
+  cin >> test;
+  while (test--) {
+    int n;
+    cin >> n;
+    ll v;
+    vector <ll> vec;
+    for (int i = 0; i < n; i++) {
+      cin >> v;
+      vec.pb(v);
+    }
+    mp.clear();
+    ll ans = fun(vec, n);
+    cout << ans << endl;
   }
-  int ans = dp[n];
-  for (int i = 0; i <= n - 3; i++) {
-    int left = i;
-    int right = n - (i + 3);
-    int total = mul(dp[left], dp[right]);
-    ans = add(ans, total);
-  }
-  cout << ans << endl;
-
+ 
   return 0;
 }
+
+
