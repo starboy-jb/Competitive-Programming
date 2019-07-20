@@ -1,10 +1,14 @@
+from plyer import notification
 import requests
 from bs4 import BeautifulSoup
 import time
 import os
 
 def message(title, message):
-	os.system('notify-send "' + title + '" "' + message + '"')
+	notification.notify (
+	    title = title,
+	    message = message,
+	)
 
 class CodechefContestAnnouncer:
 	def __init__(self, contest_link):
@@ -28,6 +32,6 @@ class CodechefContestAnnouncer:
 
 if __name__ == '__main__':
 	#replace the contest link
-	contest_link = "https://www.codechef.com/LTIME73A";
+	contest_link = "https://www.codechef.com/JULY19B"
 	Contest = CodechefContestAnnouncer(contest_link)
 	Contest.run()
