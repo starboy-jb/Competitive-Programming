@@ -39,7 +39,7 @@ int par[MAX];
 void dijkstra(int s, int n) {
     priority_queue<PII, vector <PII>, greater<PII> > pq;
     fill(all(cost), (ll)1e12);
-    pq.push({1, s});
+    pq.push({0, s});
     vis[s] = true;
     cost[1] = 0;
     par[1] = 1;
