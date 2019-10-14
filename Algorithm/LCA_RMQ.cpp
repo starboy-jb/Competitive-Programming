@@ -52,94 +52,96 @@ inline int pwr(ll x, ll y) {
 }
 inline int inv(int a) {return pwr(a, mod - 2);}
 
-vector <int> adj[MAX];
-int level[MAX], firstIndex[MAX];
+const int N = 2e3 + 5;
+
+vector <int> adj[N];
+int level[N], firstIndex[N];
 vector <int> eulerTour;
-bool vis[MAX];
+bool vis[N];
 
 void dfs(int s) {
-    vis[s] = true;
-    for (auto it : adj[s]) {
-        if (!vis[it]) {
-            level[it] = level[s] + 1;
-            eulerTour.pb(s);
-            if (firstIndex[s] == -1) firstIndex[s] = eulerTour.size() - 1;
-            dfs(it);
-            eulerTour.pb(it);
-            if (firstIndex[it] == -1) firstIndex[it] = eulerTour.size() - 1;
-        }
+  vis[s] = true;
+  for (auto it : adj[s]) {
+    if (!vis[it]) {
+      level[it] = level[s] + 1;
+      eulerTour.pb(s);
+      if (firstIndex[s] == -1) firstIndex[s] = eulerTour.size() - 1;
+      dfs(it);
+      eulerTour.pb(it);
+      if (firstIndex[it] == -1) firstIndex[it] = eulerTour.size() - 1;
     }
+  }
 }
 
 struct SegTree {
-    int seg[4 * MAX];
+  int seg[4 * N];
 
-    void build(int l, int r, int pos) {
-        if (l == r) {
-            seg[pos] = l;
-            return;
-        }
-        int mid = (l + r) / 2;
-        build(l, mid, 2 * pos + 1);
-        build(mid + 1, r, 2 * pos + 2);
-        if (level[eulerTour[seg[2 * pos + 1]]] < level[eulerTour[seg[2 * pos + 2]]]) {
-            seg[pos] = seg[2 * pos + 1];
-        } else {
-            seg[pos] = seg[2 * pos + 2];
-        }
+  void build(int l, int r, int pos) {
+    if (l == r) {
+      seg[pos] = l;
+      return;
     }
+    int mid = (l + r) / 2;
+    build(l, mid, 2 * pos + 1);
+    build(mid + 1, r, 2 * pos + 2);
+    if (level[eulerTour[seg[2 * pos + 1]]] < level[eulerTour[seg[2 * pos + 2]]]) {
+      seg[pos] = seg[2 * pos + 1];
+    } else {
+      seg[pos] = seg[2 * pos + 2];
+    }
+  }
 
-    int query(int ql, int qr, int l, int r, int pos) {
-        if (l >= ql && r <= qr) {
-            return seg[pos];
-        }
-        if (r < ql || l > qr) {
-            return -1;
-        }
-        int mid = (l + r) / 2;
-        int u = query(ql, qr, l, mid, 2 * pos + 1);
-        int v = query(ql, qr, mid + 1, r, 2 * pos + 2);
-        if (u == -1) return v;
-        if (v == -1) return u;
-        return (level[eulerTour[u]] < level[eulerTour[v]]? u: v);
+  int query(int ql, int qr, int l, int r, int pos) {
+    if (l >= ql && r <= qr) {
+      return seg[pos];
     }
-    int lca(int, int);
+    if (r < ql || l > qr) {
+      return -1;
+    }
+    int mid = (l + r) / 2;
+    int u = query(ql, qr, l, mid, 2 * pos + 1);
+    int v = query(ql, qr, mid + 1, r, 2 * pos + 2);
+    if (u == -1) return v;
+    if (v == -1) return u;
+    return (level[eulerTour[u]] < level[eulerTour[v]]? u: v);
+  }
+  int lca(int, int);
 };
 
 int SegTree :: lca(int ind1, int ind2) {
-    int ans = query(ind1, ind2, 0, eulerTour.size() - 1, 0);
-    return eulerTour[ans];
+  int ans = query(ind1, ind2, 0, eulerTour.size() - 1, 0);
+  return eulerTour[ans];
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
 
-    int n;
-    cin >> n;
-    int u, v;
-    for (int i = 0; i < n - 1; i++) {
-        cin >> u >> v;
-        adj[u].pb(v);
-        adj[v].pb(u);
-    }
-    memset(firstIndex, -1, sizeof(firstIndex));
-    level[1] = 0;
-    dfs(1);
-    eulerTour.pb(1);
-    if (firstIndex[1] == -1) firstIndex[1] = 0;
-    SegTree seg;
-    seg.build(0, eulerTour.size() - 1, 0);
-    int q;
-    cin >> q;
-    while (q--) {
-        cin >> u >> v;
-        if (firstIndex[u] > firstIndex[v]) swap(u, v);
-        int ans = seg.lca(firstIndex[u], firstIndex[v]);
-        cout << ans << endl;
-    }
+  int n;
+  cin >> n;
+  int u, v;
+  for (int i = 0; i < n - 1; i++) {
+    cin >> u >> v;
+    adj[u].pb(v);
+    adj[v].pb(u);
+  }
+  memset(firstIndex, -1, sizeof(firstIndex));
+  level[1] = 0;
+  dfs(1);
+  eulerTour.pb(1);
+  if (firstIndex[1] == -1) firstIndex[1] = 0;
+  SegTree seg;
+  seg.build(0, eulerTour.size() - 1, 0);
+  int q;
+  cin >> q;
+  while (q--) {
+    cin >> u >> v;
+    if (firstIndex[u] > firstIndex[v]) swap(u, v);
+    int ans = seg.lca(firstIndex[u], firstIndex[v]);
+    cout << ans << endl;
+  }
 
 
-    return 0;
+  return 0;
 }
