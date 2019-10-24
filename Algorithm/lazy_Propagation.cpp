@@ -99,7 +99,7 @@ inline int powr(int a, ll b){
 inline int inv(int a){ return powr(a, mod - 2);}
 
 const int N = 1e6 + 5;
-ll seg[4 * N], lazy[4 * N];
+ll seg[4 * N], lazy[4 * N], arr[N];
 
 void propagate(int pos, int low, int high) {
   if (low != high) {
@@ -111,6 +111,17 @@ void propagate(int pos, int low, int high) {
 
 void merge(int pos) {
   seg[pos] = seg[2 * pos + 1] + seg[2 * pos + 2];
+}
+
+void build(int low, int high, int pos) {
+  if (low == high) {
+    seg[pos] = arr[low];
+    return;
+  }
+  int mid = (low + high) >> 1;
+  build(low, mid, 2 * pos + 1);
+  build(mid + 1, high, 2 * pos + 2);
+  merge(pos);
 }
 
 void update(int low, int high, int l, int r, ll v, int pos) {
