@@ -1,2 +1,2 @@
 # codes
-Here you can get a lot of code of different algorithm.
+Here are some programs implementing different kind of algorithm used in Competitive Programming.
