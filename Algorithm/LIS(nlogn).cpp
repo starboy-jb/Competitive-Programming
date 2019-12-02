@@ -112,7 +112,6 @@ int main()
       last[len++] = vec[i];
     else {
       int ind = lower_bound(last.begin(), last.begin() + len, vec[i]) - last.begin();
-      if (last[ind] == vec[i]) continue;
       last[ind] = vec[i];
     }
   }
