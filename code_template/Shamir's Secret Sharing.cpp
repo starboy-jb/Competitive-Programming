@@ -1,41 +1,4 @@
-/*input
-1 2 12 8
-
-*/
- 
-/*
-                                                    ______________
-                                                          |       )
-                                                          |   )   /
-                                                          |______/
-                                                    |     |      \
-                                                    |     |   )   \
-                                                    |_____|_______)
- 
-*/
- 
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <algorithm>
-#include <cmath>
-#include <vector>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <queue>
-#include <ctime>
-#include <cassert>
-#include <complex>
-#include <string>
-#include <cstring>
-#include <chrono>
-#include <random>
-#include <queue>
-#include <bitset>
-#include <iomanip>
-#include <fstream>
+#include <bits/stdc++.h>
 
 using namespace std;
  
@@ -56,28 +19,9 @@ const ll LL_INF = 1234567890123456789ll;
 #define F first
 #define S second
 #define debug(x) cout << #x << " = " << x << endl;
-#define TRACE
- 
-#ifdef TRACE
-#define trace(...) __f(#__VA_ARGS__, __VA_ARGS__)
-template <typename Arg1>
-void __f(const char* name, Arg1&& arg1){
-  cout << name << " : " << arg1 << endl;
-}
-template <typename Arg1, typename... Args>
-void __f(const char* names, Arg1&& arg1, Args&&... args){
-  const char* comma = strchr(names + 1, ',');cout.write(names, comma - names) << " : " << arg1<<" | ";__f(comma+1, args...);
-}
-#else
-#define trace(...)
-#endif
- 
+
 #define out(container) for (auto it : container) cout << it << " "; cout << endl;
- 
- 
-template < typename T > T GCD(T a, T b)            { ll t; while(a) { t = a; a = b % a; b = t; } return b; }
-template < typename T > string toString(T a)       { return to_string(a); }
-template < typename T > void toInt(string s, T &x) { stringstream str(s); str >> x;}
+
 inline int add(int x, int y){ x += y; if(x >= mod) x -= mod; return x;}
 inline int sub(int x, int y){ x -= y; if(x < 0) x += mod; return x;}
 inline int mul(int x, int y){ return (x * 1ll * y) % mod;}
@@ -92,11 +36,13 @@ inline int powr(int a, ll b){
 }
 inline int inv(int a){ return powr(a, mod - 2);}
 
-int rand(int a, int b) {
+// https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing
+
+int rand(int a, int b) { // genrate a random number in range a to b
   return a + rand() % (b - a + 1);
 }
 
-int _eval_at(vector <int> &poly, int x) {
+int _eval_at(vector <int> &poly, int x) { // evaluate a polynomial at value x
   int ans = 0;
   for (int i = poly.size() - 1; i >= 0; i--) {
     ans = mul(ans, x);
@@ -104,7 +50,7 @@ int _eval_at(vector <int> &poly, int x) {
   }
   return ans;
 }
-void make_random_shares(vector <PII> &points, vector <int> &poly, int shares, int k) {
+void make_random_shares(vector <PII> &points, vector <int> &poly, int shares, int k) { // generate polynomial for Shamir's Algo
   if (k > shares) {
     cout << "Enter correct data" << endl;
     exit(0);
@@ -117,7 +63,7 @@ void make_random_shares(vector <PII> &points, vector <int> &poly, int shares, in
   }
 }
 
-int langrange_interpolation(vector <int> &x_s, vector <int> &y_s) {
+int langrange_interpolation(vector <int> &x_s, vector <int> &y_s) { // It is method to get back the actual polynomial
   vector <int> num, deno;
   int k = x_s.size();
   for (int i = 0; i < k; i++) {
