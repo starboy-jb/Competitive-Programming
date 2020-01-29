@@ -13,7 +13,6 @@
 3 2
 3 5
 0 0
-
 */
  
 /*
@@ -172,7 +171,9 @@ int main()
     int ans = 0;
     for (int i = 1; i <= n; i++) {
       ans += ac[i];
+      if (ac[i]) articulation_points.pb(i);
     }
+    // out(articulation_points);
     cout << ans << endl;
     init(n);
     cin >> n >> m;
