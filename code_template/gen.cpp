@@ -1,5 +1,4 @@
 /*input
-
 */
  
 /*
@@ -90,7 +89,7 @@ inline int powr(int a, ll b){
 }
 inline int inv(int a){ return powr(a, mod - 2);}
 
-int rand(int a, int b) {
+ll rand(ll a, ll b) {
   return a + rand() % (b - a + 1);
 }
 
@@ -103,12 +102,34 @@ void genTree(int n) {
     perm[i] = i;
   random_shuffle(perm.begin() + 1, perm.end());
   random_shuffle(all(edges));
+  int m = edges.size();
+  cout << n << " " << m << endl;
   for (auto it : edges) {
     int u = it.F;
     int v = it.S;
     if (rand() % 2)
       swap(u, v);
     cout << perm[u] << " " << perm[v] << endl;
+  }
+}
+
+void getGraph(int n) {
+  int m = rand((ll)n - 1, min((ll)200000, (n * 1ll * (n - 1)) / 2));
+  cout << n << " " << m << endl;
+  set <PII> edges;
+  while (m--) {
+    int u = rand(1, n);
+    int v = rand(1, n);
+    PII p = {u, v};
+    while (edges.find(p) != edges.end()) {
+      u = rand(1, n);
+      v = rand(1, n);
+      p = {u, v};
+    }
+    edges.insert(p);
+  }
+  for (auto it : edges) {
+    cout << it.F << " " << it.S << endl;
   }
 }
 
@@ -120,10 +141,10 @@ int main(int argc, char *argv[])
   srand(atoi(argv[1]));
   int mx = 100;
   int test = rand(1, 1);
-  // cout << test << endl;
+  cout << test << endl;
   while (test--) {
-    int n = rand(2, 1e2);
-    cout << n << endl;
+    int n = rand(1, 1000);
+    getGraph(n);
   }
     
     
