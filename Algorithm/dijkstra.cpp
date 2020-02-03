@@ -31,33 +31,34 @@ inline int pwr(ll x, ll y) {
 }
 inline int inv(int a) {return pwr(a, mod - 2);}
 
-vector <PII> adj[MAX];
-vector <ll> cost(MAX);
-bool vis[MAX];
-int par[MAX];
+const int N = 3e6 + 5;
+
+vector <PII> adj[N];
+vector <ll> cost(N);
+bool vis[N];
+int par[N];
 
 void dijkstra(int s, int n) {
-    priority_queue<PII, vector <PII>, greater<PII> > pq;
-    fill(all(cost), (ll)1e12);
-    pq.push({0, s});
+  priority_queue<PII, vector <PII>, greater<PII> > pq;
+  fill(all(cost), (ll)1e12);
+  pq.push({0, s});
+  vis[s] = true;
+  cost[1] = 0;
+  par[1] = 1;
+  while (!pq.empty()) {
+    s = pq.top().second;
+    ll w = pq.top().first;
+    pq.pop();
     vis[s] = true;
-    cost[1] = 0;
-    par[1] = 1;
-    while (!pq.empty()) {
-        s = pq.top().second;
-        ll w = pq.top().first;
-        pq.pop();
-        vis[s] = true;
-        for (auto it : adj[s]) {
-            if (!vis[it.first] && w + it.second < cost[it.first]) {
-                cost[it.first] = w + it.second;
-                pq.push({cost[it.first], it.first});
-                par[it.first] = s;
-            }
-        }
+    for (auto it : adj[s]) {
+      if (!vis[it.first] && w + it.second < cost[it.first]) {
+        cost[it.first] = w + it.second;
+        pq.push({cost[it.first], it.first});
+        par[it.first] = s;
+      }
     }
+  }
 }
-
 int main()
 {
     ios_base::sync_with_stdio(false);
