@@ -1,5 +1,5 @@
 /*input
-1
+2
  
 4
 1 2 1
@@ -114,23 +114,10 @@ inline int inv(int a){ return powr(a, mod - 2);}
 const int N = 1e4 + 5;
 const int LG = log2(N) + 1;
  
+ 
 // segment tree
  
-int seg[4 * N + 5], arr[N];
- 
-void build(int low, int high, int pos) {
-  if (low == high) {
-    seg[pos] = arr[low];
-    return;
-  }
- 
-  int mid = (low + high) >> 1;
- 
-  build(low, mid, 2 * pos + 1);
-  build(mid + 1, high, 2 * pos + 2);
- 
-  seg[pos] = max(seg[2 * pos + 1], seg[2 * pos + 2]);
-}
+int seg[4 * N + 5];
  
 void update(int low, int high, int ind, int value, int pos) {
   if (low == high) {
@@ -159,31 +146,52 @@ int query(int low, int high, int l, int r, int pos) {
  
 vector<int> adj[N];
  
-int sub_size[N], par[N], depth[N], heavy[N];
+int sub_size[N], par[N][LG], tin[N], tout[N];
+ 
+int timer = 0;
  
 // preprocess
  
 void dfs(int s, int p) {
+  tin[s] = ++timer;
  
   sub_size[s] = 1;
  
-  depth[s] = depth[p] + 1;
+  par[s][0] = p;
  
-  par[s] = p;
- 
-  int max_c_size = 0;
+  for (int i = 1; i < LG; i++)
+    par[s][i] = par[par[s][i - 1]][i - 1];
  
   for (auto it : adj[s]) {
     if (it == p) continue;
     dfs(it, s);
  
     sub_size[s] += sub_size[it];
- 
-    if (sub_size[it] > max_c_size)
-      max_c_size = sub_size[it], heavy[s] = it;
   }
+ 
+  tout[s] = ++timer;
 }
  
+bool is_ancestor(int u, int v) {
+  return (tin[u] <= tin[v] && tout[u] >= tout[v]);
+}
+ 
+int lca(int u, int v) {
+  if (is_ancestor(u, v))
+    return u;
+ 
+  if (is_ancestor(v, u))
+    return v;
+ 
+  for (int i = LG - 1; i >= 0; i--) {
+    if (!is_ancestor(par[u][i], v))
+      u = par[u][i];
+  }
+ 
+  return par[u][0];
+}
+ 
+int heavy[N];
  
 void dfs1(int s, int p) {
   int max_c_size = 0;
@@ -210,7 +218,7 @@ void decompose(int s, int p) {
     decompose(heavy[s], p);
  
   for (auto it : adj[s]) {
-    if (it == par[s] || it == heavy[s]) continue;
+    if (it == par[s][0] || it == heavy[s]) continue;
     decompose(it, it);
   }
 }
@@ -227,25 +235,23 @@ void update(int u, int w) {
  
  
 int query_up(int u, int v) {
+  // u -> v, where v is ancestor
   int ans = 0;
   while (head[u] != head[v]) {
-    if (depth[head[u]] > depth[head[v]])
-      swap(u, v);
-    int cur = query(pos[head[v]], pos[v]);
+    int cur = query(pos[head[u]], pos[u]);
     ans = max(ans, cur);
-    v = par[head[v]];
+    u = par[head[u]][0];
   }
-  if (depth[u] > depth[v])
-    swap(u, v);
- 
-  int cur = query(pos[u] + 1, pos[v]);
+  int cur = query(pos[v] + 1, pos[u]);
   ans = max(ans, cur);
   return ans;
 }
  
 // max edge weight between two edge
 int query1(int u, int v) {
-  return query_up(u, v);
+  int l = lca(u, v);
+  int ans = max(query_up(u, l), query_up(v, l));
+  return ans;
 }
  
 void init() {
@@ -253,8 +259,8 @@ void init() {
     adj[i].clear();
     heavy[i] = -1;
   }
+  timer = 0;
   cur_pos = 0;
-  depth[1] = 0;
 }
  
 int main()
@@ -279,21 +285,19 @@ int main()
     }
  
     dfs(1, 1);
+    dfs1(1, 1);
     decompose(1, 1);
  
     for (auto it : edges) {
       u = it[0], v = it[1], w = it[2];
-      if (par[v] != u)
+      if (par[v][0] != u)
         swap(u, v);
  
-      arr[pos[v]] = w;
+      update(v, w);
     }
  
-    build(0, N - 1, 0);
- 
-    string type;
- 
     while (1) {
+      string type;
       cin >> type;
  
       if (type[0] == 'D')
@@ -304,7 +308,7 @@ int main()
         cin >> ind >> w;
         ind--;
         u = edges[ind][0], v = edges[ind][1];
-        if (par[v] != u)
+        if (par[v][0] != u)
           swap(u, v);
  
         update(v, w);
@@ -317,4 +321,4 @@ int main()
   }
  
   return 0;
-}
+} 
